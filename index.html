@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="./icon.jpg">
+  <title>Formula Unicorn- Bid Counter</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #1a1a1a 0%, #2d1810 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      color: #ffffff;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .header h1 {
+      font-size: 36px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #ff4444 0%, #ff8800 50%, #ffcc00 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+    }
+
+    .header p {
+      color: #ffa500;
+      font-size: 16px;
+    }
+
+    .counter-card {
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 20px;
+      padding: 32px 20px;
+      border: 2px solid #ff4444;
+      box-shadow: 0 0 40px rgba(255, 68, 68, 0.3);
+      margin-bottom: 24px;
+    }
+
+    .counter-display {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .counter-label {
+      color: #ffcc00;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+    }
+
+    .counter-value {
+      font-size: 64px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #ff4444 0%, #ff8800 50%, #ffcc00 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      padding: 12px;
+      border: 3px solid;
+      border-image: linear-gradient(135deg, #ff4444, #ff8800, #ffcc00) 1;
+      border-radius: 12px;
+    }
+
+    .controls {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .input-group label {
+      color: #ffa500;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .input-group input {
+      background: rgba(0, 0, 0, 0.4);
+      border: 2px solid #ff8800;
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 16px;
+      color: #ffffff;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .input-group input:focus {
+      border-color: #ffcc00;
+      box-shadow: 0 0 20px rgba(255, 204, 0, 0.3);
+    }
+
+    .button-group {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      flex: 1;
+      min-width: 120px;
+      padding: 14px 12px;
+      font-size: 14px;
+      font-weight: 700;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      position: relative;
+    }
+
+    .btn-set {
+      background: linear-gradient(135deg, #ff8800 0%, #ffcc00 100%);
+      color: #000000;
+      flex-basis: 100%;
+    }
+
+    .btn-set:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(255, 136, 0, 0.4);
+    }
+
+    /* Added decrement button styling */
+    .btn-decrement {
+      background: linear-gradient(135deg, #ff8800 0%, #ff4444 100%);
+      color: #ffffff;
+    }
+
+    .btn-decrement:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(255, 136, 0, 0.4);
+    }
+
+    .btn-decrement:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-increment {
+      background: linear-gradient(135deg, #ff4444 0%, #ff8800 100%);
+      color: #ffffff;
+    }
+
+    .btn-increment:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(255, 68, 68, 0.4);
+    }
+
+    .btn-increment:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .increment-badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: #ffcc00;
+      color: #000000;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 6px;
+      border-radius: 10px;
+      border: 2px solid #000000;
+    }
+
+    .btn-reset {
+      background: linear-gradient(135deg, #333333 0%, #1a1a1a 100%);
+      color: #ff4444;
+      border: 2px solid #ff4444;
+      flex-basis: 100%;
+    }
+
+    .btn-reset:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(255, 68, 68, 0.3);
+      background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+    }
+
+    .btn-reset:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .rules-card {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid #ff8800;
+      border-radius: 16px;
+      padding: 20px;
+    }
+
+    .rules-card h3 {
+      color: #ffcc00;
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .rules-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .rule-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #ffa500;
+      font-size: 13px;
+    }
+
+    .rule-badge {
+      background: linear-gradient(135deg, #ff4444 0%, #ff8800 100%);
+      color: #ffffff;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 8px;
+      min-width: 50px;
+      text-align: center;
+      font-size: 12px;
+    }
+
+    @media (max-width: 640px) {
+      .header h1 {
+        font-size: 28px;
+      }
+
+      .counter-value {
+        font-size: 48px;
+      }
+
+      .counter-card {
+        padding: 24px 16px;
+      }
+
+      button {
+        min-width: 100px;
+        font-size: 13px;
+        padding: 12px 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Formula Unicorn</h1>
+      <p>Bidding System</p>
+    </div>
+
+    <div class="counter-card">
+      <div class="counter-display">
+        <div class="counter-label">Current Bid</div>
+        <div class="counter-value" id="counterValue">0 Cr</div>
+      </div>
+
+      <div class="controls">
+        <div class="input-group">
+          <label for="startValue">Set Starting Value (Cr)</label>
+          <input 
+            type="number" 
+            id="startValue" 
+            placeholder="Enter starting amount"
+            min="0"
+            step="1"
+          />
+        </div>
+
+        <div class="button-group">
+          <button class="btn-set" onclick="setStartValue()">Set Start Value</button>
+          <button class="btn-decrement" id="decrementBtn" onclick="decrementCounter()" disabled>
+            Decrement
+            <span class="increment-badge" id="decrementBadge">-0 Cr</span>
+          </button>
+          <button class="btn-increment" id="incrementBtn" onclick="incrementCounter()" disabled>
+            Increment
+            <span class="increment-badge" id="incrementBadge">+0 Cr</span>
+          </button>
+          <button class="btn-reset" id="resetBtn" onclick="resetCounter()" disabled>
+            Reset Bid
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="rules-card">
+      <h3>Bidding Rules</h3>
+      <div class="rules-list">
+        <div class="rule-item">
+          <span class="rule-badge">+5 Cr</span>
+          <span>Increment by 5 Cr when bid is between 0 - 30 Cr</span>
+        </div>
+        <div class="rule-item">
+          <span class="rule-badge">+2 Cr</span>
+          <span>Increment by 2 Cr when bid is between 30 - 50 Cr</span>
+        </div>
+        <div class="rule-item">
+          <span class="rule-badge">+1 Cr</span>
+          <span>Increment by 1 Cr when bid is above 50 Cr</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentValue = 0;
+    let isStarted = false;
+
+    function getIncrementAmount(value) {
+      if (value < 30) return 5;
+      if (value < 50) return 2;
+      return 1;
+    }
+
+    function getDecrementAmount(value) {
+      if (value <= 30) return 5;
+      if (value <= 50) return 2;
+      return 1;
+    }
+
+    function updateDisplay() {
+      document.getElementById('counterValue').textContent = `${currentValue} Cr`;
+      const incrementAmount = getIncrementAmount(currentValue);
+      document.getElementById('incrementBadge').textContent = `+${incrementAmount} Cr`;
+      
+      const decrementAmount = getDecrementAmount(currentValue);
+      document.getElementById('decrementBadge').textContent = `-${decrementAmount} Cr`;
+      
+      document.getElementById('decrementBtn').disabled = !isStarted || currentValue === 0;
+    }
+
+    function setStartValue() {
+      const input = document.getElementById('startValue');
+      const value = parseInt(input.value);
+
+      if (isNaN(value) || value < 0) {
+        alert('Please enter a valid starting value (0 or greater)');
+        return;
+      }
+
+      currentValue = value;
+      isStarted = true;
+      document.getElementById('incrementBtn').disabled = false;
+      document.getElementById('resetBtn').disabled = false;
+      updateDisplay();
+      input.value = '';
+    }
+
+    function incrementCounter() {
+      if (!isStarted) return;
+
+      const incrementAmount = getIncrementAmount(currentValue);
+      currentValue += incrementAmount;
+      updateDisplay();
+    }
+
+    function decrementCounter() {
+      if (!isStarted || currentValue === 0) return;
+
+      const decrementAmount = getDecrementAmount(currentValue);
+      currentValue = Math.max(0, currentValue - decrementAmount);
+      updateDisplay();
+    }
+
+    function resetCounter() {
+      currentValue = 0;
+      isStarted = false;
+      document.getElementById('incrementBtn').disabled = true;
+      document.getElementById('decrementBtn').disabled = true;
+      document.getElementById('resetBtn').disabled = true;
+      updateDisplay();
+    }
+
+    // Allow Enter key to set start value
+    document.getElementById('startValue').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        setStartValue();
+      }
+    });
+
+    // Initialize display
+    updateDisplay();
+  </script>
+</body>
+</html>
