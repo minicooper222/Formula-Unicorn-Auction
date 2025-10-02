@@ -31,81 +31,86 @@
     .main-content {
       display: flex;
       gap: 24px;
-      align-items: flex-start;
+      align-items: stretch;
+      padding: 0px;
     }
 
     .left-section {
-      flex: 1;
-      min-width: 0;
+      width: 400px;
+      flex-shrink: 0;
+      padding-bottom: 20px;
+      flex-direction: column;
     }
 
     .left-section .counter-value {
-      font-size: 64px;
+      font-size: 48px;
     }
 
     .left-section .counter-label {
-      font-size: 12px;
+      font-size: 10px;
     }
 
     .left-section button {
-      min-width: 120px;
-      font-size: 14px;
-      padding: 14px 12px;
+      min-width: 100px;
+      font-size: 11px;
+      padding: 10px 8px;
     }
 
     .left-section .increment-badge {
-      font-size: 11px;
-      padding: 3px 6px;
+      font-size: 9px;
+      padding: 2px 4px;
     }
 
     .left-section .input-group input {
-      font-size: 16px;
-      padding: 12px;
+      font-size: 14px;
+      padding: 10px;
     }
 
     .left-section .input-group label {
-      font-size: 13px;
+      font-size: 11px;
     }
 
     .left-section .rules-card h3 {
-      font-size: 16px;
+      font-size: 14px;
     }
 
     .left-section .rule-item {
-      font-size: 13px;
+      font-size: 11px;
     }
 
     .left-section .rule-badge {
-      font-size: 12px;
-      min-width: 50px;
+      font-size: 10px;
+      min-width: 40px;
     }
 
     .right-section {
       flex: 1;
       min-width: 0;
+      flex-direction: column;
     }
 
     .right-section .counter-value {
-      font-size: 64px;
+      font-size: 128px;
     }
 
     .right-section .counter-label {
-      font-size: 12px;
+      font-size: 16px;
     }
 
     .right-section button {
-      min-width: 120px;
-      font-size: 14px;
-      padding: 14px 12px;
+      min-width: 150px;
+      font-size: 18px;
+      padding: 18px 16px;
     }
 
     .header {
       text-align: center;
-      margin-bottom: 32px;
+      margin-bottom: 36px;
     }
 
     .header h1 {
-      font-size: 36px;
+      font-size: 40px;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
       font-weight: 800;
       background: linear-gradient(135deg, #ff4444 0%, #ff8800 50%, #ffcc00 100%);
       -webkit-background-clip: text;
@@ -407,25 +412,7 @@
           </div>
         </div>
 
-        <div class="rules-card">
-          <h3>Bidding Rules</h3>
-          <div class="rules-list">
-            <div class="rule-item">
-              <span class="rule-badge">+5 Cr</span>
-              <span>Increment by 5 Cr when bid is between 0 - 30 Cr</span>
-            </div>
-            <div class="rule-item">
-              <span class="rule-badge">+2 Cr</span>
-              <span>Increment by 2 Cr when bid is between 30 - 50 Cr</span>
-            </div>
-            <div class="rule-item">
-              <span class="rule-badge">+1 Cr</span>
-              <span>Increment by 1 Cr when bid is above 50 Cr</span>
-            </div>
-          </div>
-        </div>
       </div>
-
       <div class="right-section">
         <div class="counter-card" style="margin-bottom: 0;">
           <div class="counter-display">
@@ -472,12 +459,12 @@
     }
 
     function updateDisplay() {
-      document.getElementById('counterValue').textContent = `${currentValue} Cr`;
+      document.getElementById('counterValue').textContent = ${currentValue} Cr;
       const incrementAmount = getIncrementAmount(currentValue);
-      document.getElementById('incrementBadge').textContent = `+${incrementAmount} Cr`;
+      document.getElementById('incrementBadge').textContent = +${incrementAmount} Cr;
      
       const decrementAmount = getDecrementAmount(currentValue);
-      document.getElementById('decrementBadge').textContent = `-${decrementAmount} Cr`;
+      document.getElementById('decrementBadge').textContent = -${decrementAmount} Cr;
      
       document.getElementById('decrementBtn').disabled = !isStarted || currentValue === 0;
     }
@@ -485,7 +472,7 @@
     function updateTimerDisplay() {
       const minutes = Math.floor(timeRemaining / 60);
       const seconds = timeRemaining % 60;
-      const display = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+      const display = ${minutes}:${seconds.toString().padStart(2, '0')};
       const timerElement = document.getElementById('timerValue');
       timerElement.textContent = display;
      
