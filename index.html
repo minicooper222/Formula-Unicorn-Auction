@@ -459,12 +459,12 @@
     }
 
     function updateDisplay() {
-      document.getElementById('counterValue').textContent = ${currentValue} Cr;
+      document.getElementById('counterValue').textContent = `${currentValue} Cr`;
       const incrementAmount = getIncrementAmount(currentValue);
-      document.getElementById('incrementBadge').textContent = +${incrementAmount} Cr;
+      document.getElementById('incrementBadge').textContent = `+${incrementAmount} Cr`;
      
       const decrementAmount = getDecrementAmount(currentValue);
-      document.getElementById('decrementBadge').textContent = -${decrementAmount} Cr;
+      document.getElementById('decrementBadge').textContent = `-${decrementAmount} Cr`;
      
       document.getElementById('decrementBtn').disabled = !isStarted || currentValue === 0;
     }
@@ -472,7 +472,7 @@
     function updateTimerDisplay() {
       const minutes = Math.floor(timeRemaining / 60);
       const seconds = timeRemaining % 60;
-      const display = ${minutes}:${seconds.toString().padStart(2, '0')};
+      const display = `${minutes}:${seconds.toString().padStart(2, '0')}`;
       const timerElement = document.getElementById('timerValue');
       timerElement.textContent = display;
      
