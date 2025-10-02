@@ -25,7 +25,78 @@
 
     .container {
       width: 100%;
-      max-width: 600px;
+      max-width: 1200px;
+    }
+
+    .main-content {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+    }
+
+    .left-section {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .left-section .counter-value {
+      font-size: 64px;
+    }
+
+    .left-section .counter-label {
+      font-size: 12px;
+    }
+
+    .left-section button {
+      min-width: 120px;
+      font-size: 14px;
+      padding: 14px 12px;
+    }
+
+    .left-section .increment-badge {
+      font-size: 11px;
+      padding: 3px 6px;
+    }
+
+    .left-section .input-group input {
+      font-size: 16px;
+      padding: 12px;
+    }
+
+    .left-section .input-group label {
+      font-size: 13px;
+    }
+
+    .left-section .rules-card h3 {
+      font-size: 16px;
+    }
+
+    .left-section .rule-item {
+      font-size: 13px;
+    }
+
+    .left-section .rule-badge {
+      font-size: 12px;
+      min-width: 50px;
+    }
+
+    .right-section {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .right-section .counter-value {
+      font-size: 64px;
+    }
+
+    .right-section .counter-label {
+      font-size: 12px;
+    }
+
+    .right-section button {
+      min-width: 120px;
+      font-size: 14px;
+      padding: 14px 12px;
     }
 
     .header {
@@ -151,7 +222,6 @@
       box-shadow: 0 8px 24px rgba(255, 136, 0, 0.4);
     }
 
-    /* Added decrement button styling */
     .btn-decrement {
       background: linear-gradient(135deg, #ff8800 0%, #ff4444 100%);
       color: #ffffff;
@@ -256,6 +326,14 @@
     }
 
     @media (max-width: 640px) {
+      .main-content {
+        flex-direction: column;
+      }
+
+      .left-section {
+        width: 100%;
+      }
+
       .header h1 {
         font-size: 28px;
       }
@@ -274,6 +352,15 @@
         padding: 12px 10px;
       }
     }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.6;
+      }
+    }
   </style>
 </head>
 <body>
@@ -283,55 +370,82 @@
       <p>Bidding System</p>
     </div>
 
-    <div class="counter-card">
-      <div class="counter-display">
-        <div class="counter-label">Current Bid</div>
-        <div class="counter-value" id="counterValue">0 Cr</div>
+    <div class="main-content">
+      <div class="left-section">
+        <div class="counter-card">
+          <div class="counter-display">
+            <div class="counter-label">Current Bid</div>
+            <div class="counter-value" id="counterValue">0 Cr</div>
+          </div>
+
+          <div class="controls">
+            <div class="input-group">
+              <label for="startValue">Set Starting Value (Cr)</label>
+              <input
+                type="number"
+                id="startValue"
+                placeholder="Enter starting amount"
+                min="0"
+                step="1"
+              />
+            </div>
+
+            <div class="button-group">
+              <button class="btn-set" onclick="setStartValue()">Set Start Value</button>
+              <button class="btn-decrement" id="decrementBtn" onclick="decrementCounter()" disabled>
+                Decrement
+                <span class="increment-badge" id="decrementBadge">-0 Cr</span>
+              </button>
+              <button class="btn-increment" id="incrementBtn" onclick="incrementCounter()" disabled>
+                Increment
+                <span class="increment-badge" id="incrementBadge">+0 Cr</span>
+              </button>
+              <button class="btn-reset" id="resetBtn" onclick="resetCounter()" disabled>
+                Reset Bid
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="rules-card">
+          <h3>Bidding Rules</h3>
+          <div class="rules-list">
+            <div class="rule-item">
+              <span class="rule-badge">+5 Cr</span>
+              <span>Increment by 5 Cr when bid is between 0 - 30 Cr</span>
+            </div>
+            <div class="rule-item">
+              <span class="rule-badge">+2 Cr</span>
+              <span>Increment by 2 Cr when bid is between 30 - 50 Cr</span>
+            </div>
+            <div class="rule-item">
+              <span class="rule-badge">+1 Cr</span>
+              <span>Increment by 1 Cr when bid is above 50 Cr</span>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="controls">
-        <div class="input-group">
-          <label for="startValue">Set Starting Value (Cr)</label>
-          <input 
-            type="number" 
-            id="startValue" 
-            placeholder="Enter starting amount"
-            min="0"
-            step="1"
-          />
-        </div>
+      <div class="right-section">
+        <div class="counter-card" style="margin-bottom: 0;">
+          <div class="counter-display">
+            <div class="counter-label">Auction Timer</div>
+            <div class="counter-value" id="timerValue">5:00</div>
+          </div>
 
-        <div class="button-group">
-          <button class="btn-set" onclick="setStartValue()">Set Start Value</button>
-          <button class="btn-decrement" id="decrementBtn" onclick="decrementCounter()" disabled>
-            Decrement
-            <span class="increment-badge" id="decrementBadge">-0 Cr</span>
-          </button>
-          <button class="btn-increment" id="incrementBtn" onclick="incrementCounter()" disabled>
-            Increment
-            <span class="increment-badge" id="incrementBadge">+0 Cr</span>
-          </button>
-          <button class="btn-reset" id="resetBtn" onclick="resetCounter()" disabled>
-            Reset Bid
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <div class="rules-card">
-      <h3>Bidding Rules</h3>
-      <div class="rules-list">
-        <div class="rule-item">
-          <span class="rule-badge">+5 Cr</span>
-          <span>Increment by 5 Cr when bid is between 0 - 30 Cr</span>
-        </div>
-        <div class="rule-item">
-          <span class="rule-badge">+2 Cr</span>
-          <span>Increment by 2 Cr when bid is between 30 - 50 Cr</span>
-        </div>
-        <div class="rule-item">
-          <span class="rule-badge">+1 Cr</span>
-          <span>Increment by 1 Cr when bid is above 50 Cr</span>
+          <div class="controls">
+            <div class="button-group">
+              <button class="btn-increment" id="startTimerBtn" onclick="startTimer()">
+                Start Timer
+              </button>
+              <button class="btn-decrement" id="pauseTimerBtn" onclick="pauseTimer()" disabled>
+                Pause Timer
+              </button>
+              <button class="btn-reset" id="resetTimerBtn" onclick="resetTimer()">
+                Reset Timer
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -340,6 +454,10 @@
   <script>
     let currentValue = 0;
     let isStarted = false;
+
+    let timeRemaining = 300;
+    let timerInterval = null;
+    let isTimerRunning = false;
 
     function getIncrementAmount(value) {
       if (value < 30) return 5;
@@ -357,11 +475,72 @@
       document.getElementById('counterValue').textContent = `${currentValue} Cr`;
       const incrementAmount = getIncrementAmount(currentValue);
       document.getElementById('incrementBadge').textContent = `+${incrementAmount} Cr`;
-      
+     
       const decrementAmount = getDecrementAmount(currentValue);
       document.getElementById('decrementBadge').textContent = `-${decrementAmount} Cr`;
-      
+     
       document.getElementById('decrementBtn').disabled = !isStarted || currentValue === 0;
+    }
+
+    function updateTimerDisplay() {
+      const minutes = Math.floor(timeRemaining / 60);
+      const seconds = timeRemaining % 60;
+      const display = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+      const timerElement = document.getElementById('timerValue');
+      timerElement.textContent = display;
+     
+      if (timeRemaining <= 30 && timeRemaining > 0) {
+        timerElement.style.animation = 'pulse 1s infinite';
+      } else {
+        timerElement.style.animation = 'none';
+      }
+     
+      if (timeRemaining === 0) {
+        timerElement.style.color = '#ff4444';
+        stopTimer();
+      }
+    }
+
+    function startTimer() {
+      if (isTimerRunning) return;
+     
+      isTimerRunning = true;
+      document.getElementById('startTimerBtn').disabled = true;
+      document.getElementById('pauseTimerBtn').disabled = false;
+     
+      timerInterval = setInterval(() => {
+        if (timeRemaining > 0) {
+          timeRemaining--;
+          updateTimerDisplay();
+        } else {
+          stopTimer();
+        }
+      }, 1000);
+    }
+
+    function pauseTimer() {
+      if (!isTimerRunning) return;
+     
+      stopTimer();
+      document.getElementById('startTimerBtn').disabled = false;
+      document.getElementById('pauseTimerBtn').disabled = true;
+    }
+
+    function stopTimer() {
+      isTimerRunning = false;
+      clearInterval(timerInterval);
+      timerInterval = null;
+      document.getElementById('startTimerBtn').disabled = timeRemaining === 0;
+      document.getElementById('pauseTimerBtn').disabled = true;
+    }
+
+    function resetTimer() {
+      stopTimer();
+      timeRemaining = 300;
+      updateTimerDisplay();
+      document.getElementById('startTimerBtn').disabled = false;
+      document.getElementById('timerValue').style.color = '';
+      document.getElementById('timerValue').style.animation = 'none';
     }
 
     function setStartValue() {
@@ -406,15 +585,14 @@
       updateDisplay();
     }
 
-    // Allow Enter key to set start value
     document.getElementById('startValue').addEventListener('keypress', function(e) {
       if (e.key === 'Enter') {
         setStartValue();
       }
     });
 
-    // Initialize display
     updateDisplay();
+    updateTimerDisplay();
   </script>
 </body>
 </html>
